@@ -872,7 +872,9 @@ function Header({ menuOpen, setMenuOpen, weather }) {
         onClick={() => setMenuOpen((open) => !open)}
         type="button"
       >
-        MENU
+        <span />
+        <span />
+        <span />
       </button>
     </header>
   );
@@ -1489,57 +1491,59 @@ function MoodPlayer() {
         title="Melomaniac here — press play and pick a mood while you explore."
       >
         <div className="mood-player-row">
-          <div className="mood-player-brand">
-            <FaMusic />
-            <strong>LESFA PLAYER</strong>
-          </div>
+          <div className="mood-player-options">
+            <div className="mood-player-brand">
+              <FaMusic />
+              <strong>LESFA PLAYER</strong>
+            </div>
 
-          <div className="mood-filters" role="group" aria-label="Choose mood">
-            {moods.map((item) => {
-              const Icon = item.Icon;
-              return (
+            <div className="mood-filters" role="group" aria-label="Choose mood">
+              {moods.map((item) => {
+                const Icon = item.Icon;
+                return (
+                  <button
+                    aria-label={item.label}
+                    className={mood === item.id ? "is-active" : undefined}
+                    key={item.id}
+                    onClick={() => setMood(item.id)}
+                    title={item.label}
+                    type="button"
+                  >
+                    <Icon />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mood-filters mood-filters--lang" role="group" aria-label="Choose language">
+              {languages.map((item) => (
                 <button
-                  aria-label={item.label}
-                  className={mood === item.id ? "is-active" : undefined}
+                  className={language === item.id ? "is-active" : undefined}
                   key={item.id}
-                  onClick={() => setMood(item.id)}
-                  title={item.label}
+                  onClick={() => setLanguage(item.id)}
                   type="button"
                 >
-                  <Icon />
+                  {item.label}
                 </button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          <div className="mood-filters mood-filters--lang" role="group" aria-label="Choose language">
-            {languages.map((item) => (
-              <button
-                className={language === item.id ? "is-active" : undefined}
-                key={item.id}
-                onClick={() => setLanguage(item.id)}
-                type="button"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+            <div className="mood-now">
+              {track ? (
+                <>
+                  <strong>{track.title}</strong>
+                  <span>
+                    {track.meta} · {track.language === "ml" ? "ML" : "EN"} ·{" "}
+                    {safeIndex + 1}/{playlist.length}
+                  </span>
+                </>
+              ) : (
+                <strong>No songs for this filter</strong>
+              )}
+            </div>
 
-          <div className="mood-now">
-            {track ? (
-              <>
-                <strong>{track.title}</strong>
-                <span>
-                  {track.meta} · {track.language === "ml" ? "ML" : "EN"} ·{" "}
-                  {safeIndex + 1}/{playlist.length}
-                </span>
-              </>
-            ) : (
-              <strong>No songs for this filter</strong>
-            )}
+            <Equalizer active={playing} bars={16} className="equalizer--player" />
           </div>
-
-          <Equalizer active={playing} bars={16} className="equalizer--player" />
 
           <div className="mood-controls">
             <button aria-label="Previous song" disabled={!track} onClick={prevTrack} type="button">
@@ -1562,14 +1566,19 @@ function MoodPlayer() {
       </div>
 
       {playing && track && (
-        <iframe
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-          className="mood-audio-frame"
-          key={`${track.youtubeId}-${safeIndex}`}
-          src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
-          title={`Audio: ${track.title}`}
-        />
+        <>
+          <iframe
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            className="mood-audio-frame"
+            key={`${track.youtubeId}-${safeIndex}`}
+            src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
+            title={`Audio: ${track.title}`}
+          />
+          <p className="mood-player-hint">
+            If playback doesn't start, tap play in the video player.
+          </p>
+        </>
       )}
     </div>
   );
@@ -1667,8 +1676,8 @@ function App() {
       <HoverField />
       <div className="sticky-top">
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} weather={weather} />
-        <MoodPlayer />
       </div>
+      <MoodPlayer />
       <main id="main">
         <Hero />
         <About />

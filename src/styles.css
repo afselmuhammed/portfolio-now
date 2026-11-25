@@ -225,19 +225,32 @@ button {
 .menu-btn {
   display: none;
   justify-self: end;
+  width: 42px;
   min-height: 34px;
-  padding: 0 14px;
+  padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(96, 165, 250, 0.1));
   color: rgba(255, 255, 255, 0.9);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  white-space: nowrap;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
   backdrop-filter: blur(12px) saturate(150%);
   -webkit-backdrop-filter: blur(12px) saturate(150%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.menu-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.menu-btn span:nth-child(2) {
+  width: 14px;
 }
 
 .top-status {
@@ -2144,7 +2157,7 @@ button {
     inset: 100% 0 auto;
     display: grid;
     gap: 0;
-    padding: 12px 18px 20px;
+    padding: 12px 18px 32px;
     background: rgba(0, 0, 0, 0.98);
     border-bottom: 1px solid var(--line);
     transform: translateY(-8px);
@@ -2232,7 +2245,7 @@ button {
   border: 1px solid rgba(96, 165, 250, 0.18);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.03);
-  overflow-x: auto;
+  overflow: hidden;
   scrollbar-width: none;
 }
 
@@ -2246,6 +2259,20 @@ button {
   gap: 10px;
   min-height: 40px;
   white-space: nowrap;
+}
+
+.mood-player-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mood-player-options::-webkit-scrollbar {
+  display: none;
 }
 
 .mood-player-brand {
@@ -2374,12 +2401,18 @@ button {
 }
 
 .mood-audio-frame {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
+  display: block;
+  width: min(420px, 100%);
+  height: 236px;
+  margin: 8px auto 0;
   border: 0;
+}
+
+.mood-player-hint {
+  margin: 5px 0 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  text-align: center;
 }
 
 /* Equalizer */
@@ -2457,15 +2490,40 @@ button {
     display: none;
   }
 
-  .mood-now span {
-    display: none;
+  .mood-controls {
+    order: 0;
   }
 
   .equalizer--player {
+    order: 1;
     min-width: 40px;
   }
 
   .equalizer--player span:nth-child(n + 11) {
+    display: none;
+  }
+
+  .mood-player-options {
+    order: 2;
+  }
+
+  .mood-filters--lang {
+    order: 0;
+  }
+
+  .mood-filters:not(.mood-filters--lang) {
+    order: 1;
+  }
+
+  .mood-player-brand {
+    order: 2;
+  }
+
+  .mood-now {
+    order: 3;
+  }
+
+  .mood-now span {
     display: none;
   }
 }
